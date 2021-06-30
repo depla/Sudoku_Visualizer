@@ -8,6 +8,9 @@ import sudoku_generator
 class Board:
 
     def __init__(self):
+        """
+        Constructor for the sudoku board
+        """
         pygame.init()
         pygame.display.set_caption("Sudoku Visualizer")
         self.screen_size = 660
@@ -16,12 +19,17 @@ class Board:
         self.screen = pygame.display.set_mode((self.screen_size, self.screen_size + 100))
         self.grid_font = pygame.font.SysFont("comicsans", 40)
         self.instruction_font = pygame.font.SysFont("arial", 20)
+        # grid is current state of the number grid
         self.grid = [[0] * 9 for i in range(9)]
+        # original grid is the initial starting state of the number grid
         self.original_grid = [[0] * 9 for i in range(9)]
-
         self.current_location = (-1, -1)
 
     def draw_background(self):
+        """
+        Draws the grid for the board and the instructions at the bottom of screen
+        :return:
+        """
         self.screen.fill(pygame.Color("white"))
         self.display_instructions()
         # draw board
@@ -46,6 +54,10 @@ class Board:
                              line_width)
 
     def draw_numbers(self):
+        """
+        Draws the numbers from the current grid state onto the board
+        :return:
+        """
         offset = self.cell_size // 2 + self.margin // 2
 
         for i in range(len(self.grid)):
@@ -57,6 +69,10 @@ class Board:
                                                           i * self.cell_size + offset))
 
     def display_instructions(self):
+        """
+        Displays the game instructions at the bottom of the screen
+        :return:
+        """
         text = self.instruction_font.render("Click cells and edit with 1-9 (backspace clears a cell)",
                                             True, pygame.Color("black"))
         self.screen.blit(text, pygame.Vector2(self.margin, self.screen_size - 10))
@@ -70,6 +86,11 @@ class Board:
         self.screen.blit(text, pygame.Vector2(self.margin, self.screen_size + 70))
 
     def get_selected_cell(self, pos):
+        """
+        Converts mouse click position into sudoku grid coordinates
+        :param pos: The position of the mouse click
+        :return: The grid cell that was clicked on, a tuple of (row, col) coordinates
+        """
         selected_cell = ((pos[1] - self.margin) // self.cell_size, (pos[0] - self.margin) // self.cell_size)
         if 0 <= selected_cell[0] <= 8 and 0 <= selected_cell[1] <= 8:
             return selected_cell
@@ -77,6 +98,11 @@ class Board:
             return None
 
     def highlight_cell(self, cell):
+        """
+        Draws a red square around the cell the user clicked on
+        :param cell: The selected cell that the user clicked on
+        :return:
+        """
         self.draw_background()
         self.draw_numbers()
         if 0 <= cell[0] <= 8 and 0 <= cell[1] <= 8:
@@ -85,6 +111,11 @@ class Board:
                                                                            self.cell_size, self.cell_size), 7)
 
     def highlight_solution(self, cell):
+        """
+        
+        :param cell:
+        :return:
+        """
         self.draw_background()
         self.draw_numbers()
         offset = self.cell_size // 2 + self.margin // 2
