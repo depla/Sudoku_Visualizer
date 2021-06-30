@@ -6,6 +6,11 @@ import copy
 class Solver:
 
     def __init__(self, board):
+        """
+        Constructor is injected with the board so that the solver can update the screen with the solution with the
+        board methods
+        :param board:
+        """
         self.board = board
 
     def __is_possible(self, x, y, num, grid):
@@ -27,7 +32,7 @@ class Solver:
             if grid[i][y] == num:
                 return False
 
-        # check the square
+        # check the smaller square grids
         x0 = (x // 3) * 3
         y0 = (y // 3) * 3
         for i in range(0, 3):
@@ -40,8 +45,9 @@ class Solver:
     @staticmethod
     def is_valid_grid(grid):
         """
-        :type grid: List[List[int]]
-        :rtype: bool
+        Checks to see if a sudoku grid is valid or not (doesn't break any of the constraints of sudoku)
+        :param grid: The grid in question
+        :return: Boolean of whether or not the grid is valid
         """
         # init data
         rows = [{} for i in range(9)]
@@ -67,9 +73,9 @@ class Solver:
 
     def solve_sudoku_visualizer(self, grid):
         """
-        solves sodoku grid
-        :param grid: the sudoku grid to be solved
-        :return: whether or not the grid has been solved
+        Solves the sudoku puzzle and updates the screen to visualize the recursive backtracking algorithm
+        :param grid: The sudoku grid to be solved
+        :return: Whether or not the grid has been solved
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

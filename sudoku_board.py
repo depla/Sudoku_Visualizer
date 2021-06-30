@@ -112,8 +112,8 @@ class Board:
 
     def highlight_solution(self, cell):
         """
-        
-        :param cell:
+        Draws green numbers for sudoku solution and a blue square at the location of where the solver is
+        :param cell: The cell location of the solver
         :return:
         """
         self.draw_background()
@@ -132,11 +132,22 @@ class Board:
                                                                             self.cell_size, self.cell_size), 7)
 
     def update_grid(self, row, col, entered_number):
+        """
+        Updates the grid and the screen for when the user enters numbers
+        :param row: The row of the selected grid
+        :param col: The column of the selected grid
+        :param entered_number: The number that the user entered
+        :return:
+        """
         self.grid[row][col] = entered_number
         self.original_grid[row][col] = entered_number
         self.draw_numbers()
 
     def clear_grid(self):
+        """
+        Clears the whole board
+        :return:
+        """
         self.grid = [[0] * 9 for i in range(9)]
         self.original_grid = [[0] * 9 for i in range(9)]
         self.draw_background()
@@ -144,19 +155,28 @@ class Board:
         self.current_location = (-1, -1)
 
     def remove_solution(self):
+        """
+        Removes the solution to the solved grid after running the solver
+        :return:
+        """
         self.grid = self.original_grid
         self.draw_background()
         self.draw_numbers()
         self.current_location = (-1, -1)
 
-
     def run_game(self):
+        """
+        Method that contains all the game logic and event handling
+        :return:
+        """
         self.draw_background()
         self.draw_numbers()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+
+                # Handles when user clicks on a grid cell
                 if event.type == pygame.MOUSEBUTTONUP:
                     pos = pygame.mouse.get_pos()
                     selected_cell = self.get_selected_cell(pos)
@@ -170,6 +190,7 @@ class Board:
                         self.draw_numbers()
                         self.current_location = (-1, -1)
 
+                # Handles various key presses controlling the board state
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         if sudoku_solver.Solver.is_valid_grid(self.grid):
@@ -190,6 +211,7 @@ class Board:
                         self.draw_background()
                         self.draw_numbers()
 
+                # Handles when user wants to edit thee grid cell manually
                 if self.current_location[0] is not -1 and self.current_location[1] is not -1:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_1:

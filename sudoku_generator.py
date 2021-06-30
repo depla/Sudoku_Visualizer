@@ -2,13 +2,20 @@ import random
 
 
 def generate_sudoku(num_givens):
+    """
+    Generates a sudoku puzzle with a given number of clues. Puzzle is guaranteed a solution.
+    :param num_givens: The number of clues given for a puzzle
+    :return: The unsolved puzzle
+    """
     grid = [[0] * 9 for i in range(9)]
+    # generate a randomly filled grid
     __generate_sudoku_helper(grid)
 
     num_removals = 81 - num_givens
 
     locations_to_remove = set()
 
+    # remove random numbers from the grid until there are enough clues as specifieed
     while len(locations_to_remove) < num_removals:
         x = random.randint(0, 8)
         y = random.randint(0, 8)
@@ -22,9 +29,9 @@ def generate_sudoku(num_givens):
 
 def __generate_sudoku_helper(grid):
     """
-    solves sodoku grid
-    :param grid: the sudoku grid to be solved
-    :return: whether or not the grid has been solved
+    Generates a randomly filled sudoku grid
+    :param grid: An empty grid of 0's
+    :return: A randomly filled out sudoku grid
     """
     nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     random.shuffle(nums)
@@ -68,7 +75,7 @@ def __is_possible(x, y, num, grid):
         if grid[i][y] == num:
             return False
 
-    # check the square
+    # check the smaller square grids
     x0 = (x // 3) * 3
     y0 = (y // 3) * 3
     for i in range(0, 3):
